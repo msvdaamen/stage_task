@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TaskEvent;
 use App\Task;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,8 +21,8 @@ class taskController extends Controller
         $task->checked = 0;
         $task->created_at = Carbon::now();
         $task->save();
-        $array = ['id' => $task->id, 'title' => $task->title, 'created_at' => $task->created_at];
-        return response($array, 200);
+        $this->sendMessage($task, false);
+        return response($task, 200);
     }
     public function update(Request $request){
         $task = Task::where('id', $request->input('taskID'))->first();
@@ -35,12 +36,18 @@ class taskController extends Controller
         $task->title = $request->input('title');
         $task->checked = $request->input('checked');
         $task->save();
-
+        $this->sendMessage($task, false);
         return response()->json([
             'task' => $task
         ], 200);
     }
     public function delete(Request $request){
         Task::destroy($request->input('taskID'));
+        $this->sendMessage($request->input('taskID'), true);
+    }
+
+    public function sendMessage($task, $delete){
+//        $array = ['id' => 10, 'title' => 'test', 'created_at' => 'test'];
+        broadcast(new TaskEvent($task, $delete))->toOthers();
     }
 }

@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/css/bulma.css">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="token" id="token" value="{{ csrf_token() }}">
     </head>
     <body>
         <div id="app">
@@ -26,9 +27,9 @@
                         <div class="column">
                             <div class="is-2">
                                 <input v-on:change="editTask(task.id)" :id="task.id + 'checkbox'" class="checkbox" :checked="task.checked == 1" type="checkbox">
-                                <input :id="task.id + 'input'" class="input" :value="task.title">
+                                <input v-on:keyup="editTask(task.id)" :id="task.id + 'input'" class="input" :value="task.title">
                                 <a v-on:click="deleteTask(task.id, index)" class="icon is-pulled-right"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                <a v-on:click="editTask(task.id)" class="icon is-pulled-right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                {{--<a v-on:click="editTask(task.id)" class="icon is-pulled-right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>--}}
                                 <p class="subtitle is-pulled-right">@{{task.created_at}}</p>
                             </div>
                         </div>

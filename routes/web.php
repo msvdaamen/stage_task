@@ -18,4 +18,5 @@ Route::post('/allTasks', 'taskController@all');
 Route::post('/makeTask', 'taskController@make');
 Route::post('/updateTask', 'taskController@update');
 Route::post('/deleteTask', 'taskController@delete');
+Route::post('/test', 'taskController@sendMessage');
 
